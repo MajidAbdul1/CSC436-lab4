@@ -1,0 +1,48 @@
+{
+  "todos": [
+    {
+      "id": 1,
+      "title": "Go Shopping",
+      "description": "Buy 5 pair of jeans",
+      "author": "majid3209@gmail.com",
+      "dateCreated": "2023-11-20T09:35:58.010Z",
+      "complete": true,
+      "dateCompleted": "2023-11-20T09:36:06.834Z"
+    },
+    {
+      "title": "Add Apples",
+      "description": "4 apples",
+      "author": "mmoham9@depaul.edu",
+      "dateCreated": "2023-11-20T09:41:51.757Z",
+      "complete": false,
+      "dateCompleted": null,
+      "id": 3
+    },
+    {
+      "title": "hello",
+      "description": "5 apples",
+      "author": "mmoham9@depaul.edu",
+      "dateCreated": "2023-11-20T09:45:37.286Z",
+      "complete": false,
+      "dateCompleted": null,
+      "id": 4
+    }
+  ],
+  "users": [
+    {
+      "email": "mmoham9@depaul.edu",
+      "password": "$2a$10$jvSd55i5BAlQ2XbAwG52qey0R1VbvhNZQH91wpSj2D30vfAAghtWa",
+      "id": 3
+    },
+    {
+      "email": "majid@majid.com",
+      "password": "$2a$10$z.wQMrZmM/eB2K44MznuxeqRz7KAI.tcXuUW1Cq6a45BSB4QwGqEK",
+      "id": 4
+    },
+    {
+      "email": "m@m.com",
+      "password": "$2a$10$sUQmcRW8Dwxa3lWCxKoXW.7XvItQKNejaOMHp5.y.LsIPNfNsHZVa",
+      "id": 6
+    }
+  ]
+}
