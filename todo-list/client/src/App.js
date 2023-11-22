@@ -14,35 +14,30 @@ function App() {
   });
 
   const [todosResponse, getTodos] = useResource(() => ({
-    url: "/todos",
+    url: "/todo",
     method: "get",
+    headers: {
+      Authorization: `${state?.user?.access_token}`
+    }
   }));
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const todos = await getTodos(); // Await the result of getTodos
-        dispatch({ type: "FETCH_TODO", todos: todos.data.reverse() });
-      } catch (error) {
-        // Handle error
-        console.error('Error fetching todos:', error);
-      }
-    };
-
-    fetchData();
-  }, [getTodos]); // Include getTodos in the dependency array
+    if (state?.user?.access_token) {
+      getTodos();
+    }
+  }, [state?.user?.access_token, getTodos]);
 
   useEffect(() => {
     if (todosResponse && todosResponse.data) {
-      dispatch({ type: "FETCH_TODO", todos: todosResponse.data.reverse() });
+      dispatch({ type: "FETCH_TODO", todos: todosResponse.data.todos.reverse() });
     }
-  }, [todosResponse]);
+  }, [todosResponse, dispatch]);
 
   return (
     <StateContext.Provider value={{ state, dispatch }}>
       <div>
         <UserBar />
-        {state.user && <TodoForm />}
+        {state.user && state.user.email && <TodoForm />}
         <ListTodo />
       </div>
     </StateContext.Provider>

@@ -1,82 +1,53 @@
-import React, { useState, useEffect } from 'react';
-import { StateContext } from './context';
-import { useContext } from 'react';
-import { useResource } from 'react-request-hook';
+import React, { useState, useEffect, useContext } from 'react'
+import { useResource } from 'react-request-hook'
+import { StateContext } from './context'
 
 export default function Login() {
-    const [username, setUsername] = useState('');
-    const { dispatch } = useContext(StateContext);
-    const [loginFailed, setLoginFailed] = useState(false);
-    const [password, setPassword] = useState('');
-    const [loginAttempted, setLoginAttempted] = useState(false);
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+    const [loginFailed, setLoginFailed] = useState(false)
+    const { dispatch } = useContext(StateContext)
 
-    function handleUsername(evt) {
-        setUsername(evt.target.value);
-    }
-
-    function handlePassword(evt) {
-        setPassword(evt.target.value);
-    }
-
-    const [user, login] = useResource((username, password) => ({
-        url: "/login",
+    const [user, login] = useResource((email, password) => ({
+        url: "/auth/login",
         method: "post",
-        data: { email: username, password },
+        data: { email, password },
     }));
 
     useEffect(() => {
-        if (loginAttempted && user) {
-            if (user?.data?.user) {
-                setLoginFailed(false);
-                dispatch({ type: "LOGIN", username: user.data.user.email });
+        if (user && user.isLoading === false) {
+            if (user.error || !user.data || !user.data.access_token) {
+                if (user.error) setLoginFailed(true);
             } else {
-                setLoginFailed(true);
+                setLoginFailed(false)
+                dispatch({
+                    type: "LOGIN",
+                    user: {
+                        email: email,
+                        access_token: user.data.access_token
+                    }
+                })
             }
         }
-    }, [user, dispatch, loginAttempted]);
+    }, [user, dispatch, email]);  // Include 'dispatch' and 'email' in the dependency array
+
+
+    const handleSubmit = e => {
+        e.preventDefault();
+        setLoginFailed(false);
+        login(email, password);
+    }
 
     return (
         <div>
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    setLoginAttempted(true);
-                    login(username, password);
-                }}
-            >
-                <label htmlFor="login-username">Username:</label>
-                <input
-                    type="text"
-                    value={username}
-                    onChange={handleUsername}
-                    name="login-username"
-                    id="login-username"
-                />
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="login-email">Email:</label>
+                <input type="text" value={email} onChange={e => setEmail(e.target.value)} name="login-email" id="login-email" />
                 <label htmlFor="login-password">Password:</label>
-                <input
-                    type="password"
-                    value={password}
-                    onChange={handlePassword}
-                    name="login-password"
-                    id="login-password"
-                />
-                <input type="submit" value="Login" disabled={username.length === 0} />
+                <input type="password" value={password} onChange={e => setPassword(e.target.value)} name="login-password" id="login-password" />
+                <input type="submit" value="Login" disabled={email.length === 0 || password.length === 0} />
             </form>
-            {loginAttempted && !username && !password && (
-                <p style={{ color: 'red', marginTop: '10px' }}>
-                    Please enter username and password.
-                </p>
-            )}
-            {loginFailed && (
-                <p style={{ color: 'red', marginTop: '10px' }}>
-                    Invalid Credentials. Please try again.
-                </p>
-            )}
-            {user?.data?.user && (
-                <p style={{ color: 'green', marginTop: '10px' }}>
-                    Login successful!
-                </p>
-            )}
+            {loginFailed && <p>Login Failed. Please try again.</p>}
         </div>
-    );
+    )
 }

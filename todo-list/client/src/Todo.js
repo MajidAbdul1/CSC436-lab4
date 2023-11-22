@@ -2,24 +2,29 @@ import { useState, useContext } from "react";
 import { useResource } from 'react-request-hook';
 import { StateContext } from './context';
 
-export default function Todo({ title, description, author, dateCreated, complete, dateCompleted, id }) {
-    const { dispatch } = useContext(StateContext);
+export default function Todo({ title, description, author, dateCreated, complete, dateCompleted, _id }) {
+    const { state, dispatch } = useContext(StateContext);
     const [isComplete, setComplete] = useState(complete);
 
-    const [todo, updateTodo] = useResource((todo) => ({
-        url: `/todos/${todo.id}`,
+    const [, updateTodo] = useResource(({ id, updatedTodo }) => ({
+        url: `/todo/${id}`,
         method: "PUT",
-        data: todo,
+        headers: {
+            "Authorization": `${state.user.access_token}`
+        },
+        data: updatedTodo
     }));
 
-    const [_, deleteTodo] = useResource((id) => ({
-        url: `/todos/${id}`,
-        method: "DELETE"
+    const [, deleteTodo] = useResource((id) => ({
+        url: `/todo/${id}`,
+        method: "DELETE",
+        headers: {
+            "Authorization": `${state.user.access_token}`
+        }
     }));
 
     const handleToggle = () => {
         const updatedTodo = {
-            id,
             title,
             description,
             author,
@@ -28,22 +33,20 @@ export default function Todo({ title, description, author, dateCreated, complete
             dateCompleted: !isComplete ? new Date().toISOString() : null
         };
 
-        updateTodo(updatedTodo);
+        updateTodo({ id: _id, updatedTodo });
         setComplete(!isComplete);
-        dispatch({ type: "TOGGLE_TODO", todo: updatedTodo });
+        dispatch({ type: "TOGGLE_TODO", todo: { ...updatedTodo, _id } });
     };
 
     const handleDelete = () => {
-        deleteTodo(id);
-        dispatch({ type: "DELETE_TODO", id });
+        deleteTodo(_id);
+        dispatch({ type: "DELETE_TODO", _id });
     };
 
     return (
         <div>
             <h3>{title}</h3>
             <div>{description}</div>
-            <br />
-            <i>Written by <b>{author}</b></i>
             <div>Created on: {new Date(dateCreated).toLocaleString()}</div>
             <div>Completed on: {isComplete ? new Date(dateCompleted).toLocaleString() : "Not completed"}</div>
 

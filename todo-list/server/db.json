@@ -43,6 +43,25 @@
       "email": "m@m.com",
       "password": "$2a$10$sUQmcRW8Dwxa3lWCxKoXW.7XvItQKNejaOMHp5.y.LsIPNfNsHZVa",
       "id": 6
+    },
+    {
+      "email": "mmajid3209@gmail.com",
+      "password": "$2a$10$r6wYLYB90ARN0KVwoC.0F.e4W3mEGI5x9C7Jsa.dQZ6A/Z59Lm2Rq",
+      "passwordConfirmation": "123456",
+      "id": 7
+    },
+    {
+      "email": "majid123@gmail.com",
+      "password": "$2a$10$C3NvvzJCIhhPTXU0dBXCiO0dcnsfDm0z8CV7HXQ3Fj5o0xEEw.bkO",
+      "passwordConfirmation": "majid123",
+      "id": 8
+    },
+    {
+      "email": "t@t.net",
+      "password": "$2a$10$ESqbE7ajPM34qEyVSt7.u.L/hxjJKWpqD3o/KO6/30loVa8YaVkSC",
+      "username": "test09",
+      "passwordConfirmation": "1234",
+      "id": 9
     }
   ]
 }

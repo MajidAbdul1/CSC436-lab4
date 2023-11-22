@@ -1,23 +1,15 @@
-import React, { useContext, useEffect } from 'react';
-import Todo from './Todo';
-import { StateContext } from './context';
+import { useContext } from 'react'
+import Todo from './Todo'
+import { StateContext } from './context'
 
-export default function TodoList() {
+export default function ListTodo() {
     const { state, dispatch } = useContext(StateContext);
     const { todos } = state;
 
-    // Filter out the default list if it exists
-    const filteredTodos = todos.filter(todo => todo.title !== 'Default List');
-
-    useEffect(() => {
-        console.log('useEffect: Todos', todos)
-    }, [todos, dispatch]);
-
     return (
         <div>
-            {filteredTodos.map((todo) => (
-                <Todo {...todo} key={todo.id} dispatch={dispatch} />
-            ))}
+            {todos.length === 0 && <h2>No todos found.</h2>}
+            {todos.length > 0 && todos.map((todo) => <Todo {...todo} key={todo._id || todo.id} dispatch={dispatch} />)}
         </div>
-    );
+    )
 }
