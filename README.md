@@ -1,2 +1,4 @@
 # CSC436
-Added required chnages for lab 4.
+Pushed required changes for lab 4 as initial commit.
+
+Then Pushed Changes for Lab 5.
